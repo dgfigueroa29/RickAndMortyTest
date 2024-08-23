@@ -1,4 +1,4 @@
-package com.boa.rickandmortytest.ui.theme
+package com.boa.rickandmortytest.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

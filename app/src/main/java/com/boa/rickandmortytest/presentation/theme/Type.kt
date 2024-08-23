@@ -1,4 +1,4 @@
-package com.boa.rickandmortytest.ui.theme
+package com.boa.rickandmortytest.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
