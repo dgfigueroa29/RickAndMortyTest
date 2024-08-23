@@ -18,7 +18,6 @@ class LocationViewModel @Inject constructor(private val getLocationListUseCase: 
      */
     fun getLocations() {
         viewModelScope.launch {
-            refreshLoading(true)
             getLocationListUseCase.invoke().collect { resource ->
                 Timber.w(
                     "***VM Resource collect flag: ${resource.flag} " +
@@ -28,12 +27,14 @@ class LocationViewModel @Inject constructor(private val getLocationListUseCase: 
                 refreshError(resource.message)
 
                 if (resource.message.isNotEmpty()) {
+                    refreshLoading(false)
                     return@collect
                 }
 
-                resource.data?.let {
+                if (resource.data != null) {
                     refreshLoading(false)
-                    locationState.locationList.value = it
+                    locationState.locationList.value = resource.data
+                    return@collect
                 }
             }
         }

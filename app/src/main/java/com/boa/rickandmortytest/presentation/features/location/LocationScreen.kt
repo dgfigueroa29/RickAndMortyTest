@@ -57,11 +57,11 @@ fun LocationScreen(
         }
     }
 
+    LoadingView(isLoading = loadingState.value)
+
     LaunchedEffect(true) {
         viewModel.getLocations()
     }
-
-    LoadingView(isLoading = loadingState.value)
 
     Column(
         modifier = modifier

@@ -11,13 +11,14 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun LoadingView(modifier: Modifier = Modifier, isLoading: Boolean) {
-    if (!isLoading) return
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        CircularProgressIndicator()
-        Text("Loading...")
+    if (isLoading) {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CircularProgressIndicator()
+            Text("Loading...")
+        }
     }
 }

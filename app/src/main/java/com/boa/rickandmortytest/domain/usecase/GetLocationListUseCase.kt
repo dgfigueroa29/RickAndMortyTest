@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-//@ViewModelScoped
 class GetLocationListUseCase @Inject constructor(private val locationRepository: LocationRepository) {
     suspend operator fun invoke(): Flow<ResourceModel<PagingData<LocationModel>>> = flow {
         //Connecting with the repository in Data Layer

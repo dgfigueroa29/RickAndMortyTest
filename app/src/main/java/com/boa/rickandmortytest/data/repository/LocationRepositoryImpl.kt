@@ -16,7 +16,6 @@ class LocationRepositoryImpl @Inject constructor(private val dataSource: Locatio
     LocationRepository {
     override suspend fun getAllLocations(): Flow<PagingData<LocationModel>> {
         //Detecting available source of data and prepare it for use
-        val response = dataSource.getAllLocations(1)
         return Pager(
             config = PagingConfig(pageSize = 20, prefetchDistance = 2),
             pagingSourceFactory = { LocationPaging(dataSource) }).flow

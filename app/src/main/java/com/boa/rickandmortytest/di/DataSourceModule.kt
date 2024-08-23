@@ -11,15 +11,12 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
-import jakarta.inject.Singleton
 import kotlinx.serialization.json.Json
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataSourceModule(name: String?) {
-    @Provides
-    fun provideLocationDataSource(): LocationDataSource = LocationDataSource()
-
+object DataSourceModule {
     @Provides
     @Singleton
     fun provideService(): HttpClient {
@@ -36,6 +33,9 @@ class DataSourceModule(name: String?) {
                 )
             }
         }
-
     }
+
+    @Provides
+    @Singleton
+    fun provideLocationDataSource(api: HttpClient): LocationDataSource = LocationDataSource(api)
 }
