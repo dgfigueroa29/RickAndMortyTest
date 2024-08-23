@@ -5,5 +5,5 @@ import com.boa.rickandmortytest.domain.model.LocationModel
 import kotlinx.coroutines.flow.Flow
 
 interface LocationRepository {
-    fun getAllLocations(): Flow<PagingData<LocationModel>>
+    suspend fun getAllLocations(): Flow<PagingData<LocationModel>>
 }

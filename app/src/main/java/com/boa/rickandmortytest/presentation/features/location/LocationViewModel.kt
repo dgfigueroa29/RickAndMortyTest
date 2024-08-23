@@ -17,17 +17,20 @@ class LocationViewModel @Inject constructor(private val getLocationListUseCase: 
      * Get Location List from UseCase in Domain Layer
      */
     fun getLocations() {
-        refreshLoading(true)
         viewModelScope.launch {
+            refreshLoading(true)
             getLocationListUseCase.invoke().collect { resource ->
-                Timber.w("***VM Resource collect $resource")
-                refreshLoading(true)
-                refreshError("")
-                resource.message?.let {
-                    refreshError(it)
-                    refreshLoading(false)
-                    return@let
+                Timber.w(
+                    "***VM Resource collect flag: ${resource.flag} " +
+                            "message: ${resource.message} data: ${resource.data}"
+                )
+                refreshLoading(resource.flag)
+                refreshError(resource.message)
+
+                if (resource.message.isNotEmpty()) {
+                    return@collect
                 }
+
                 resource.data?.let {
                     refreshLoading(false)
                     locationState.locationList.value = it
