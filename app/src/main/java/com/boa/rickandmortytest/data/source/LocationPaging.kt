@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.boa.rickandmortytest.data.mapper.LocationMapper
 import com.boa.rickandmortytest.domain.model.LocationModel
-import timber.log.Timber
 
 class LocationPaging(private val dataSource: LocationDataSource) :
     PagingSource<Int, LocationModel>() {
@@ -32,9 +31,8 @@ class LocationPaging(private val dataSource: LocationDataSource) :
                 prevKey = prev,
                 nextKey = next
             )
-        } catch (exception: Exception) {
-            Timber.e("***Error Load Paging $page: ${exception.stackTraceToString()}")
-            return LoadResult.Error(exception)
+        } catch (e: Exception) {
+            LoadResult.Error(e)
         }
     }
 }

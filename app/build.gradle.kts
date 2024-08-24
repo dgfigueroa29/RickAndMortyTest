@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.ktor.client.serialization.json)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.library.base)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

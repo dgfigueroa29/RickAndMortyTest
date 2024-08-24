@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.boa.rickandmortytest.domain.model.LocationModel
+import com.boa.rickandmortytest.presentation.component.InfoDialog
 import com.boa.rickandmortytest.presentation.component.LoadingView
 import com.boa.rickandmortytest.presentation.component.TextView
 import com.boa.rickandmortytest.presentation.theme.PrimaryColor
@@ -45,21 +44,25 @@ fun LocationScreen(
     modifier: Modifier = Modifier,
     viewModel: LocationViewModel = hiltViewModel()
 ) {
-    val snackBarHostState = remember { SnackbarHostState() }
-    val loadingState = viewModel.locationState.loadingState.collectAsStateWithLifecycle()
+    val loadingState = viewModel.locationState.loadingState
     val errorState = viewModel.locationState.errorState.collectAsStateWithLifecycle()
     val locationList = viewModel.locationState.locationList
 
     //Prepare view
-    LaunchedEffect(key1 = errorState.value) {
-        if (errorState.value.isNotEmpty()) {
-            snackBarHostState.showSnackbar(errorState.value)
-        }
+    if (errorState.value.isNotEmpty()) {
+        InfoDialog(
+            title = "No connection?",
+            desc = errorState.value,
+            onDismiss = {
+                viewModel.refreshError("")
+            }
+        )
     }
 
-    LoadingView(isLoading = loadingState.value)
+    LoadingView(isLoading = loadingState)
 
     LaunchedEffect(true) {
+        //Check internet
         viewModel.getLocations()
     }
 
@@ -69,9 +72,12 @@ fun LocationScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LocationList(locations = locationList, onLocationClicked = { location ->
-            Timber.d("Location: ${location.name}")
-        })
+        LocationList(
+            viewModel = viewModel,
+            locations = locationList,
+            onLocationClicked = { location ->
+                Timber.d("Location: ${location.name}")
+            })
     }
 }
 
@@ -80,18 +86,29 @@ fun LocationList(
     modifier: Modifier = Modifier,
     onLocationClicked: (LocationModel) -> Unit = {},
     locations: Flow<PagingData<LocationModel>>,
+    viewModel: LocationViewModel? = null,
 ) {
     val locationList = locations.collectAsLazyPagingItems()
-    LazyColumn(
-        modifier
-            .fillMaxSize()
-            .padding(15.dp),
-        verticalArrangement = Arrangement.spacedBy(15.dp),
-    ) {
-        items(locationList.itemCount) { index ->
-            locationList[index]?.let {
-                LocationItem(it, onLocationClicked)
+
+    if (locationList.itemCount == 0) {
+        LaunchedEffect(true) {
+            viewModel?.refreshError("No data to display. Please restart your connection or your app to continue.\n")
+        }
+    } else {
+        LazyColumn(
+            modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(locationList.itemCount) { index ->
+                locationList[index]?.let {
+                    LocationItem(it, onLocationClicked)
+                }
             }
+        }
+        LaunchedEffect(true) {
+            viewModel?.refreshError("")
         }
     }
 }
@@ -152,7 +169,9 @@ fun LocationItemPreview() {
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LocationList(locations = flowOf(PagingData.from(locationList.toList())))
+            LocationList(
+                locations = flowOf(PagingData.from(locationList.toList()))
+            )
         }
 
     }

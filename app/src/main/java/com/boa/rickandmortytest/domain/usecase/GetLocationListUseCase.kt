@@ -16,7 +16,7 @@ class GetLocationListUseCase @Inject constructor(private val locationRepository:
             try {
                 emit(ResourceModel.Success(it))
             } catch (e: Exception) {
-                emit(ResourceModel.Error(e.message.toString()))
+                emit(ResourceModel.Error(e.stackTraceToString()))
             }
         }
     }

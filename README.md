@@ -25,7 +25,7 @@ curl --location --globoff 'https://rickandmortyapi.com/api/location'
 
 ```json
 {
- "info": {
+  "info": {
     "count": 126,
     "pages": 7,
     "next": "https://rickandmortyapi.com/api/location?page=2",

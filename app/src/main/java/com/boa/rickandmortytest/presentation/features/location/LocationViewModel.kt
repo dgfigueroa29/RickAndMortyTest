@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.boa.rickandmortytest.domain.usecase.GetLocationListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,31 +16,26 @@ class LocationViewModel @Inject constructor(private val getLocationListUseCase: 
      * Get Location List from UseCase in Domain Layer
      */
     fun getLocations() {
+        //Force loading at the beginning
+        refreshLoading(true)
         viewModelScope.launch {
             getLocationListUseCase.invoke().collect { resource ->
-                Timber.w(
-                    "***VM Resource collect flag: ${resource.flag} " +
-                            "message: ${resource.message} data: ${resource.data}"
-                )
-                refreshLoading(resource.flag)
-                refreshError(resource.message)
-
-                if (resource.message.isNotEmpty()) {
-                    refreshLoading(false)
+                if (resource.data != null && resource.message.isBlank()) {
+                    locationState.locationList.value = resource.data
                     return@collect
                 }
 
-                if (resource.data != null) {
-                    refreshLoading(false)
-                    locationState.locationList.value = resource.data
+                if (resource.message.isNotBlank() && resource.data == null) {
+                    refreshError(resource.message)
                     return@collect
                 }
             }
         }
     }
 
-    private fun refreshError(message: String) {
+    fun refreshError(message: String) {
         locationState.errorState.value = message
+        refreshLoading(message.isNotBlank())
     }
 
     private fun refreshLoading(flag: Boolean) {
