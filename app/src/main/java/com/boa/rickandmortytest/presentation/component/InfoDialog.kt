@@ -90,7 +90,6 @@ fun InfoDialog(
                         color = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
-
                     //OK button
                     Button(
                         onClick = onDismiss,
@@ -103,9 +102,7 @@ fun InfoDialog(
                             color = MaterialTheme.colorScheme.onPrimary,
                         )
                     }
-
                     Spacer(modifier = Modifier.height(24.dp))
-
                 }
             }
         }

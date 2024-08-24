@@ -8,16 +8,31 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LocationViewModel @Inject constructor(private val getLocationListUseCase: GetLocationListUseCase) :
+class LocationViewModel @Inject constructor(
+    private val getLocationListUseCase: GetLocationListUseCase
+) :
     ViewModel() {
     val locationState = LocationState()
+    private var isConnected = true
+
+    fun updateConnectionStatus(isConnected: Boolean) {
+        refreshLoading(true)
+        this.isConnected = isConnected
+
+        if (isConnected) {
+            refreshError("")
+            getLocations()
+        } else {
+            refreshLoading(false)
+            refreshError("No data to display. Please restart your connection or your app to continue.\n")
+        }
+    }
 
     /**
      * Get Location List from UseCase in Domain Layer
      */
-    fun getLocations() {
+    private fun getLocations() {
         //Force loading at the beginning
-        refreshLoading(true)
         viewModelScope.launch {
             getLocationListUseCase.invoke().collect { resource ->
                 if (resource.data != null && resource.message.isBlank()) {
@@ -27,6 +42,7 @@ class LocationViewModel @Inject constructor(private val getLocationListUseCase: 
 
                 if (resource.message.isNotBlank() && resource.data == null) {
                     refreshError(resource.message)
+                    refreshLoading(false)
                     return@collect
                 }
             }
@@ -35,10 +51,9 @@ class LocationViewModel @Inject constructor(private val getLocationListUseCase: 
 
     fun refreshError(message: String) {
         locationState.errorState.value = message
-        refreshLoading(message.isNotBlank())
     }
 
-    private fun refreshLoading(flag: Boolean) {
+    fun refreshLoading(flag: Boolean) {
         locationState.loadingState.value = flag
     }
 }

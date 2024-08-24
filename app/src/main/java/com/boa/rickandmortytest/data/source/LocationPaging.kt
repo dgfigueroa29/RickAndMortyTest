@@ -22,6 +22,8 @@ class LocationPaging(private val dataSource: LocationDataSource) :
             val prev = page.minus(1)
             val next = page.plus(1)
 
+            //Convert DTOs to Model
+            //When realm has support for kotlin 2.0 here we will call a local implementation to use cache
             if ((response.info?.count ?: 0) > 0) {
                 list = LocationMapper().mapAll(response.results)
             }

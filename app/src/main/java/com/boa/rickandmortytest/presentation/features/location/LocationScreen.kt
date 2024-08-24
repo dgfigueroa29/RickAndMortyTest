@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.boa.rickandmortytest.domain.model.LocationModel
+import com.boa.rickandmortytest.presentation.component.ConnectivityStatus
 import com.boa.rickandmortytest.presentation.component.InfoDialog
 import com.boa.rickandmortytest.presentation.component.LoadingView
 import com.boa.rickandmortytest.presentation.component.TextView
@@ -44,12 +45,17 @@ fun LocationScreen(
     modifier: Modifier = Modifier,
     viewModel: LocationViewModel = hiltViewModel()
 ) {
-    val loadingState = viewModel.locationState.loadingState
+    val loadingState = viewModel.locationState.loadingState.collectAsStateWithLifecycle()
     val errorState = viewModel.locationState.errorState.collectAsStateWithLifecycle()
     val locationList = viewModel.locationState.locationList
 
+    //Checking internet
+    ConnectivityStatus {
+        viewModel.updateConnectionStatus(it)
+    }
+
     //Prepare view
-    if (errorState.value.isNotEmpty()) {
+    if (errorState.value.isNotBlank()) {
         InfoDialog(
             title = "No connection?",
             desc = errorState.value,
@@ -59,11 +65,8 @@ fun LocationScreen(
         )
     }
 
-    LoadingView(isLoading = loadingState)
-
-    LaunchedEffect(true) {
-        //Check internet
-        viewModel.getLocations()
+    LoadingView(loadingState) {
+        viewModel.refreshLoading(false)
     }
 
     Column(
@@ -109,6 +112,7 @@ fun LocationList(
         }
         LaunchedEffect(true) {
             viewModel?.refreshError("")
+            viewModel?.refreshLoading(false)
         }
     }
 }

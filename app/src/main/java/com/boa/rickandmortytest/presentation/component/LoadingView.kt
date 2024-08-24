@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -23,18 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.boa.rickandmortytest.R
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun LoadingView(isLoading: MutableStateFlow<Boolean>) {
-    if (isLoading.collectAsStateWithLifecycle().value) {
+fun LoadingView(isLoading: State<Boolean>, onDismissRequest: () -> Unit) {
+    if (isLoading.value) {
         // Dialog function
         Dialog(
-            onDismissRequest = {
-                isLoading.value = false
-            },
+            onDismissRequest = onDismissRequest,
             properties = DialogProperties(
                 usePlatformDefaultWidth = false // experimental
             )
@@ -82,9 +79,7 @@ fun LoadingView(isLoading: MutableStateFlow<Boolean>) {
                         color = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
-
                 }
-
             }
         }
     }
