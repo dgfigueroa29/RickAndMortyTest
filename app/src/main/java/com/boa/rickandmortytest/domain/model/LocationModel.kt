@@ -5,7 +5,7 @@ data class LocationModel(
     val name: String,
     val type: String,
     val dimension: String,
-    val residents: List<String>,
+    val residentUrls: Set<String>,
     val url: String,
     val created: String
 )

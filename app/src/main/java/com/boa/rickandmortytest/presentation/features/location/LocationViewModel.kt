@@ -36,7 +36,7 @@ class LocationViewModel @Inject constructor(
         viewModelScope.launch {
             getLocationListUseCase.invoke().collect { resource ->
                 if (resource.data != null && resource.message.isBlank()) {
-                    locationState.locationList.value = resource.data
+                    locationState.setList(resource.data)
                     return@collect
                 }
 
@@ -50,10 +50,10 @@ class LocationViewModel @Inject constructor(
     }
 
     fun refreshError(message: String) {
-        locationState.errorState.value = message
+        locationState.setError(message)
     }
 
     fun refreshLoading(flag: Boolean) {
-        locationState.loadingState.value = flag
+        locationState.setLoading(flag)
     }
 }

@@ -16,8 +16,11 @@ import androidx.compose.ui.unit.TextUnitType
 import com.boa.rickandmortytest.presentation.theme.PrimaryColor
 
 @Composable
-fun TextView(
-    modifier: Modifier = Modifier, text: String, textColor: Color = PrimaryColor, maxLines: Int = 2
+fun AppText(
+    modifier: Modifier = Modifier, text: String, textColor: Color = PrimaryColor,
+    maxLines: Int = 2,
+    fontSize: TextUnit = TextUnit(15f, TextUnitType.Sp),
+    fontWeight: FontWeight = FontWeight.Normal
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -26,12 +29,13 @@ fun TextView(
     ) {
         Text(
             text = text,
+            modifier = modifier.fillMaxWidth(),
             textAlign = TextAlign.Start,
             minLines = 1,
-            fontSize = TextUnit(15f, TextUnitType.Sp),
+            fontSize = fontSize,
             color = textColor,
             maxLines = maxLines,
-            fontWeight = FontWeight.Normal,
+            fontWeight = fontWeight,
             overflow = TextOverflow.Ellipsis,
         )
     }

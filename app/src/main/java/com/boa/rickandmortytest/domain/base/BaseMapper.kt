@@ -6,19 +6,6 @@ package com.boa.rickandmortytest.domain.base
 abstract class BaseMapper<I, O> {
     abstract fun map(input: I): O
 
-    fun mapAll(input: Collection<I>?): List<O> {
-        val list = ArrayList<O>()
-
-        if (input.isNullOrEmpty().not()) {
-            input?.forEach {
-                val mapped = map(it)
-
-                if (list.contains(mapped).not()) {
-                    list.add(mapped)
-                }
-            }
-        }
-
-        return list
-    }
+    fun mapAll(input: Collection<I>?): List<O> =
+        input?.mapNotNull { map(it) }?.distinct() ?: emptyList()
 }

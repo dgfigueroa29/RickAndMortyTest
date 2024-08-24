@@ -10,14 +10,14 @@ import com.boa.rickandmortytest.presentation.features.location.LocationScreen
 @Composable
 fun NavigationGraph(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navController: NavHostController
 ) {
     NavHost(
         modifier = modifier,
-        navController = navHostController,
-        startDestination = NavigationRoutes.LocationRoute.endpoint,
+        navController = navController,
+        startDestination = Screen.LOCATION.endpoint,
     ) {
-        composable(NavigationRoutes.LocationRoute.endpoint) {
+        composable(Screen.LOCATION.endpoint) {
             LocationScreen()
         }
     }

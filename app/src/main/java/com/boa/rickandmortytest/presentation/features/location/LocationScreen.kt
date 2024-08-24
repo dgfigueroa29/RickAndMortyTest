@@ -29,10 +29,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.boa.rickandmortytest.domain.model.LocationModel
+import com.boa.rickandmortytest.presentation.component.AppText
 import com.boa.rickandmortytest.presentation.component.ConnectivityStatus
 import com.boa.rickandmortytest.presentation.component.InfoDialog
 import com.boa.rickandmortytest.presentation.component.LoadingView
-import com.boa.rickandmortytest.presentation.component.TextView
 import com.boa.rickandmortytest.presentation.theme.PrimaryColor
 import com.boa.rickandmortytest.presentation.theme.RickAndMortyTestTheme
 import kotlinx.coroutines.flow.Flow
@@ -49,26 +49,28 @@ fun LocationScreen(
     val errorState = viewModel.locationState.errorState.collectAsStateWithLifecycle()
     val locationList = viewModel.locationState.locationList
 
-    //Checking internet
-    ConnectivityStatus {
-        viewModel.updateConnectionStatus(it)
+    //Checking internet connection
+    ConnectivityStatus { isConnected ->
+        viewModel.updateConnectionStatus(isConnected)
     }
 
-    //Prepare view
+    //Display error dialog if needed
     if (errorState.value.isNotBlank()) {
         InfoDialog(
             title = "No connection?",
-            desc = errorState.value,
+            description = errorState.value,
             onDismiss = {
                 viewModel.refreshError("")
             }
         )
     }
 
+    //Show loading indicator while fetching data
     LoadingView(loadingState) {
         viewModel.refreshLoading(false)
     }
 
+    //Display location list
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -121,7 +123,7 @@ fun LocationList(
 fun LocationItem(location: LocationModel, onLocationClicked: (LocationModel) -> Unit = {}) {
     Column(modifier = Modifier
         .fillMaxWidth()
-        .clickable { if (location.residents.isNotEmpty()) onLocationClicked(location) }
+        .clickable { if (location.residentUrls.isNotEmpty()) onLocationClicked(location) }
         .padding(4.dp)
         .border(2.dp, PrimaryColor, shape = RoundedCornerShape(16.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -143,10 +145,10 @@ fun LocationItem(location: LocationModel, onLocationClicked: (LocationModel) -> 
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.fillMaxWidth()
             )
-            TextView(text = location.dimension.capitalize(Locale.current))
-            TextView(text = location.type.capitalize(Locale.current))
-            TextView(
-                text = "Residents #${location.residents.count()}",
+            AppText(text = location.dimension.capitalize(Locale.current))
+            AppText(text = location.type.capitalize(Locale.current))
+            AppText(
+                text = "Residents #${location.residentUrls.count()}",
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -160,7 +162,7 @@ fun LocationItemPreview() {
     var id = 0
     val location = LocationModel(
         id, "name", "type",
-        "dimension", listOf("1", "2", "3"), "url", "created"
+        "dimension", setOf("1", "2", "3"), "url", "created"
     )
     RickAndMortyTestTheme {
         val locationList = mutableListOf(location)

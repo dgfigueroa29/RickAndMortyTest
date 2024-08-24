@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.boa.rickandmortytest.data.mapper.LocationMapper
 import com.boa.rickandmortytest.domain.model.LocationModel
 
-class LocationPaging(private val dataSource: LocationDataSource) :
+class LocationPagingSource(private val dataSource: LocationDataSource) :
     PagingSource<Int, LocationModel>() {
     override fun getRefreshKey(state: PagingState<Int, LocationModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -15,23 +15,23 @@ class LocationPaging(private val dataSource: LocationDataSource) :
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LocationModel> {
-        val page = params.key ?: 1
+        val pageNumber = params.key ?: 1
         return try {
-            val response = dataSource.getAllLocations(page)
-            var list: List<LocationModel> = emptyList()
-            val prev = page.minus(1)
-            val next = page.plus(1)
-
+            val response = dataSource.getAllLocations(pageNumber)
             //Convert DTOs to Model
-            //When realm has support for kotlin 2.0 here we will call a local implementation to use cache
-            if ((response.info?.count ?: 0) > 0) {
-                list = LocationMapper().mapAll(response.results)
+            val list = if ((response.info?.count ?: 0) > 0) {
+                LocationMapper().mapAll(response.results) // Directly assign the result
+            } else {
+                emptyList()
             }
+            val prevKey = pageNumber.minus(1)
+            val nextKey = pageNumber.plus(1)
+            //When realm has support for kotlin 2.0 here we will call a local implementation to use cache
 
             LoadResult.Page(
                 data = list,
-                prevKey = prev,
-                nextKey = next
+                prevKey = prevKey,
+                nextKey = nextKey
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

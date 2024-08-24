@@ -1,30 +1,32 @@
 package com.boa.rickandmortytest.presentation.component
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.boa.rickandmortytest.R
 
 @Composable
 fun LoadingView(isLoading: State<Boolean>, onDismissRequest: () -> Unit) {
@@ -33,52 +35,57 @@ fun LoadingView(isLoading: State<Boolean>, onDismissRequest: () -> Unit) {
         Dialog(
             onDismissRequest = onDismissRequest,
             properties = DialogProperties(
-                usePlatformDefaultWidth = false // experimental
+                usePlatformDefaultWidth = false
             )
         ) {
-            Surface(modifier = Modifier.fillMaxSize()) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+            // Use a Box to control the layout more easily
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f)), // Add a semi-transparent background
+                contentAlignment = Alignment.Center
+            ) {
+                // Use a Card to give the loading content a nice container
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .widthIn(max = 300.dp), // Limit the width for better visual appeal
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.ic_launcher_round),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
+                    Column(
                         modifier = Modifier
-                            .height(200.dp)
+                            .padding(24.dp)
                             .fillMaxWidth(),
-                    )
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        // Replace the launcher icon with a more generic loading icon
+                        Icon(
+                            imageVector = Icons.Default.Refresh, // Example, choose a suitable icon
+                            contentDescription = "Loading",
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
 
-                    Spacer(modifier = Modifier.height(20.dp))
-                    CircularProgressIndicator()
-                    //Title
-                    Text(
-                        text = "Loading...",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .fillMaxWidth(),
-                        letterSpacing = 2.sp,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
 
-                    //Description
-                    Text(
-                        text = "Please wait...",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(top = 10.dp, start = 25.dp, end = 25.dp)
-                            .fillMaxWidth(),
-                        letterSpacing = 3.sp,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "Loading...",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleMedium, // Use a more appropriate text style
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Please wait...",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                 }
             }
         }

@@ -10,7 +10,7 @@ class LocationMapper : BaseMapper<LocationDto, LocationModel>() {
         name = input.name ?: "",
         type = input.type ?: "",
         dimension = input.dimension ?: "",
-        residents = input.residents ?: listOf(),
+        residentUrls = input.residents ?: setOf(),
         url = input.url ?: "",
         created = input.created ?: ""
     )

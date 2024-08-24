@@ -22,20 +22,27 @@ object DataSourceModule {
     fun provideService(): HttpClient {
         return HttpClient(Android) {
             install(Logging) {
-                level = LogLevel.ALL
+                //Use ALL for debugging purposes
+                level = LogLevel.NONE
             }
             install(ContentNegotiation) {
                 json(
                     Json {
                         prettyPrint = true
                         isLenient = true
+                        ignoreUnknownKeys = true
                     }
                 )
+            }
+            engine {
+                connectTimeout = 10_000
+                socketTimeout = 10_000
             }
         }
     }
 
     @Provides
     @Singleton
-    fun provideLocationDataSource(api: HttpClient): LocationDataSource = LocationDataSource(api)
+    fun provideLocationDataSource(httpClient: HttpClient): LocationDataSource =
+        LocationDataSource(httpClient)
 }

@@ -12,9 +12,7 @@ import com.boa.rickandmortytest.presentation.sensor.ConnectivityReceiver
 fun ConnectivityStatus(onConnectionChanged: (Boolean) -> Unit) {
     val context = LocalContext.current
     val connectivityReceiver = remember {
-        ConnectivityReceiver { isConnected ->
-            onConnectionChanged(isConnected)
-        }
+        ConnectivityReceiver(onConnectionChanged)
     }
 
     DisposableEffect(Unit) {
