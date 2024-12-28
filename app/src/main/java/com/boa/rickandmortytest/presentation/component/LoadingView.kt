@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
+@Suppress("FunctionNaming")
 @Composable
 fun LoadingView(isLoading: State<Boolean>, onDismissRequest: () -> Unit) {
     if (isLoading.value) {
@@ -42,7 +43,8 @@ fun LoadingView(isLoading: State<Boolean>, onDismissRequest: () -> Unit) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f)), // Add a semi-transparent background
+                    .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f)),
+                // Add a semi-transparent background
                 contentAlignment = Alignment.Center
             ) {
                 // Use a Card to give the loading content a nice container

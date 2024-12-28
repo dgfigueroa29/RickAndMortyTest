@@ -22,6 +22,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Pink40
 )
 
+@Suppress("FunctionNaming")
 @Composable
 fun RickAndMortyTestTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

@@ -14,6 +14,7 @@ class LocationPagingSource(private val dataSource: LocationDataSource) :
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LocationModel> {
         val pageNumber = params.key ?: 1
         return try {

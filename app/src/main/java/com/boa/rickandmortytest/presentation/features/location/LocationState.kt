@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+@Suppress("ConstructorParameterNaming")
 data class LocationState(
     private val _loadingState: MutableStateFlow<Boolean> = MutableStateFlow(false),
     val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow(),

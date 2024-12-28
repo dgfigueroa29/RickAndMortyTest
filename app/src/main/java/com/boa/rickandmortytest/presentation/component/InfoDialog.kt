@@ -23,6 +23,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.boa.rickandmortytest.R
 
+@Suppress("FunctionNaming")
 @Composable
 fun InfoDialog(
     title: String = "",

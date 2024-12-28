@@ -21,9 +21,8 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
@@ -40,6 +39,7 @@ import kotlinx.coroutines.flow.flowOf
 import timber.log.Timber
 
 
+@Suppress("FunctionNaming")
 @Composable
 fun LocationScreen(
     modifier: Modifier = Modifier,
@@ -86,6 +86,7 @@ fun LocationScreen(
     }
 }
 
+@Suppress("FunctionNaming")
 @Composable
 fun LocationList(
     modifier: Modifier = Modifier,
@@ -119,6 +120,7 @@ fun LocationList(
     }
 }
 
+@Suppress("FunctionNaming")
 @Composable
 fun LocationItem(location: LocationModel, onLocationClicked: (LocationModel) -> Unit = {}) {
     Column(modifier = Modifier
@@ -138,7 +140,7 @@ fun LocationItem(location: LocationModel, onLocationClicked: (LocationModel) -> 
                 text = location.name.capitalize(Locale.current),
                 textAlign = TextAlign.Start,
                 minLines = 1,
-                fontSize = TextUnit(20f, TextUnitType.Sp),
+                fontSize = 20.sp,
                 color = Color.Black,
                 maxLines = 2,
                 fontWeight = FontWeight.Medium,
@@ -156,6 +158,7 @@ fun LocationItem(location: LocationModel, onLocationClicked: (LocationModel) -> 
 }
 
 
+@Suppress("FunctionNaming", "MagicNumber")
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun LocationItemPreview() {

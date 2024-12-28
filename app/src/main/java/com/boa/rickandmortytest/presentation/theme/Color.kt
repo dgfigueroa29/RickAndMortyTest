@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.boa.rickandmortytest.presentation.theme
 
 import androidx.compose.ui.graphics.Color

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import com.boa.rickandmortytest.presentation.theme.PrimaryColor
 
+@Suppress("LongParameterList", "FunctionNaming", "MagicNumber")
 @Composable
 fun AppText(
     modifier: Modifier = Modifier, text: String, textColor: Color = PrimaryColor,

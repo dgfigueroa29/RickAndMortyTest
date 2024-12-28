@@ -10,14 +10,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Suppress("MagicNumber")
 class LocationDataSource @Inject constructor(
     private val httpClient: HttpClient,
 ) {
     suspend fun getAllLocations(page: Int = 1): LocationResponse =
         withContext(Dispatchers.IO) {
+            val url = "https://rickandmortyapi.com/api/location?page=$page"
             // Directly fetch data
-            val response =
-                httpClient.get("https://rickandmortyapi.com/api/location?page=$page")// Handle potential errors, don't just assume success
+            val response = httpClient.get(url)
+            // Handle potential errors, don't just assume success
             if (response.status.value in 200..299) {
                 response.body<LocationResponse>()
             } else {

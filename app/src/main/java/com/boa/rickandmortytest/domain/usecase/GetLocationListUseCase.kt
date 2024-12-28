@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+@Suppress("TooGenericExceptionCaught")
 class GetLocationListUseCase @Inject constructor(private val locationRepository: LocationRepository) {
     operator fun invoke(): Flow<UiStateModel<PagingData<LocationModel>>> = flow {
         //Connecting with the repository in Data Layer
