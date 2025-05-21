@@ -15,6 +15,7 @@ android {
     defaultConfig {
         applicationId = "com.boa.rickandmortytest"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -45,6 +46,7 @@ android {
         compose = true
         buildConfig = true
     }
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
@@ -81,6 +83,7 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.ui.tooling.preview)
 
     //Data
     implementation(libs.ktor.client.core)
@@ -101,5 +104,4 @@ dependencies {
     //Debugging
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.ui.tooling.preview)
 }

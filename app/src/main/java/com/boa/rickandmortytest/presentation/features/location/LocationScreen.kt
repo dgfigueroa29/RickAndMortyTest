@@ -123,11 +123,12 @@ fun LocationList(
 @Suppress("FunctionNaming")
 @Composable
 fun LocationItem(location: LocationModel, onLocationClicked: (LocationModel) -> Unit = {}) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .clickable { if (location.residentUrls.isNotEmpty()) onLocationClicked(location) }
-        .padding(4.dp)
-        .border(2.dp, PrimaryColor, shape = RoundedCornerShape(16.dp)),
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { if (location.residentUrls.isNotEmpty()) onLocationClicked(location) }
+            .padding(4.dp)
+            .border(2.dp, PrimaryColor, shape = RoundedCornerShape(16.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top) {
 

@@ -14,7 +14,7 @@ class ConnectivityReceiver(private val onNetworkChange: (Boolean) -> Unit) : Bro
         val network = connectivityManager.activeNetwork
         val capabilities = connectivityManager.getNetworkCapabilities(network)
         val isConnected =
-            capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
+            capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 
         onNetworkChange(isConnected)
     }

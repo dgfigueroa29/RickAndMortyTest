@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.boa.rickandmortytest.presentation.sensor.ConnectivityReceiver
 
-@Suppress("FunctionNaming")
+@Suppress("FunctionNaming", "DEPRECATION")
 @Composable
 fun ConnectivityStatus(onConnectionChanged: (Boolean) -> Unit) {
     val context = LocalContext.current
