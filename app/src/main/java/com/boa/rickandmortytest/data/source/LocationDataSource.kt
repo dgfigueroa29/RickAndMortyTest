@@ -15,7 +15,7 @@ class LocationDataSource @Inject constructor(
     private val httpClient: HttpClient,
 ) {
     suspend fun getAllLocations(page: Int = 1): LocationResponse =
-        withContext(Dispatchers.Default) {
+        withContext(Dispatchers.IO) {
             val url = "https://rickandmortyapi.com/api/location?page=$page"
             // Directly fetch data
             val response = httpClient.get(url)
